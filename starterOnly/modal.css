@@ -305,6 +305,7 @@ input[data-error]::after {
   left: 21%;
   top: 19%;
 }
+
 .close {
   position: absolute;
   right: 15px;
