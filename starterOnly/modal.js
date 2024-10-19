@@ -9,9 +9,11 @@ function editNav() {
 
 // DOM Elements
 const modalbg = document.querySelector(".bground");
+const modalBody = document.querySelector(".modal-body");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 const closeBtn = document.querySelectorAll(".close");
+const btnSubmit = document.getElementById("btnSubmit");
 const balisePrenom = document.getElementById("first");
 const prenomParent = balisePrenom.closest(".formData");
 const baliseNom = document.getElementById("last");
@@ -155,6 +157,21 @@ function formValide() {
   formData.forEach((formData) => {
     formData.style.opacity = "0";
   });
+  const validation = document.createElement("div");
+  const messageValidation = document.createElement("h2");
+  const contenuValidation = "Merci pour<br>votre inscription";
+  validation.appendChild(messageValidation);
+  modalBody.appendChild(validation);
+  messageValidation.innerHTML = contenuValidation;
+  messageValidation.style.width = "100%";
+  messageValidation.style.position = "absolute";
+  messageValidation.style.top = "50%";
+  messageValidation.style.left = "50%";
+  messageValidation.style.transform = "translate(-50%, -50%)";
+  messageValidation.style.fontSize = "36px";
+  messageValidation.style.fontWeight = "400";
+  messageValidation.style.textAlign = "center";
+  messageValidation.style.color = "white";
 }
 
 //Form submit event
@@ -164,5 +181,7 @@ form.addEventListener("submit", (event) => {
   if (isValid) {
     form.reset();
     formValide();
+    btnSubmit.value = "Fermer";
+    btnSubmit.addEventListener("click", closeModal);
   }
 });
