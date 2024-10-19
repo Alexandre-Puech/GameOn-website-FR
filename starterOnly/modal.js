@@ -12,6 +12,19 @@ const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 const closeBtn = document.querySelectorAll(".close");
+const balisePrenom = document.getElementById("first");
+const prenomParent = balisePrenom.closest(".formData");
+const baliseNom = document.getElementById("last");
+const nomParent = baliseNom.closest(".formData");
+const baliseEmail = document.getElementById("email");
+const emailParent = baliseEmail.closest(".formData");
+const baliseNaissance = document.getElementById("birthdate");
+const naissanceParent = baliseNaissance.closest(".formData");
+const baliseQuantite = document.getElementById("quantity");
+const quantiteParent = baliseQuantite.closest(".formData");
+const baliseLocation = document.getElementsByName("location");
+const baliseConditions = document.getElementById("checkbox1");
+const conditionsParent = baliseConditions.closest(".formData");
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -30,21 +43,6 @@ function closeModal() {
 }
 
 //Form validation rules
-const balisePrenom = document.getElementById("first");
-let prenomParent = balisePrenom.closest(".formData");
-const baliseNom = document.getElementById("last");
-let nomParent = baliseNom.closest(".formData");
-const baliseEmail = document.getElementById("email");
-let emailParent = baliseEmail.closest(".formData");
-const baliseNaissance = document.getElementById("birthdate");
-let naissanceParent = baliseNaissance.closest(".formData");
-const baliseQuantite = document.getElementById("quantity");
-let quantiteParent = baliseQuantite.closest(".formData");
-const baliseLocation = document.getElementsByName("location");
-// let locationParent = baliseLocation.closest(".formData");
-const baliseConditions = document.getElementById("checkbox1");
-let conditionsParent = baliseConditions.closest(".formData");
-
 function validerPrenom() {
   const prenom = balisePrenom.value;
   if (prenom.length >= 2) {
@@ -98,14 +96,25 @@ function validerQuantite() {
 }
 
 function validerLocation() {
-  for (let i = 0; i < baliseLocation.length; i++)
-    if (!baliseLocation[i].checked) {
-      let locationParent = baliseLocation[i].closest(".formData");
-      locationParent.setAttribute("data-error-visible", "true");
-      return false;
+  let isChecked = false; // Variable pour suivre si un radio est coché
+  baliseLocation.forEach((radio) => {
+    if (radio.checked) {
+      isChecked = true; // Un bouton radio est sélectionné
     }
-  let locationParent = baliseLocation[i].closest(".formData");
-  locationParent.setAttribute("data-error-visible", "false");
+  });
+  if (!isChecked) {
+    // Aucun bouton n'est sélectionné
+    baliseLocation.forEach((radio) => {
+      const locationParent = radio.closest(".formData");
+      locationParent.setAttribute("data-error-visible", "true");
+    });
+    return false;
+  }
+  // Si un bouton est sélectionné, on enlève l'erreur (si présente)
+  baliseLocation.forEach((radio) => {
+    const locationParent = radio.closest(".formData");
+    locationParent.setAttribute("data-error-visible", "false");
+  });
   return true;
 }
 
@@ -118,6 +127,7 @@ function validerConditions() {
   return true;
 }
 
+//Function validate on submit
 function validate() {
   const isValidPrenom = validerPrenom();
   const isValidNom = validerNom();
@@ -126,6 +136,7 @@ function validate() {
   const isValidQuantite = validerQuantite();
   const isValidLocation = validerLocation();
   const isValidConditions = validerConditions();
+
   if (
     isValidPrenom &&
     isValidNom &&
@@ -135,11 +146,15 @@ function validate() {
     isValidLocation &&
     isValidConditions
   ) {
-    //alert("Formulaire envoyé");
     return true;
   }
-  // alert("Erreur formulaire");
   return false;
+}
+
+function formValide() {
+  formData.forEach((formData) => {
+    formData.style.opacity = "0";
+  });
 }
 
 //Form submit event
@@ -148,8 +163,6 @@ form.addEventListener("submit", (event) => {
   const isValid = validate();
   if (isValid) {
     form.reset();
-    console.log("formulaire envoyé et réinitialisé");
-  } else {
-    console.log("erreur");
+    formValide();
   }
 });
