@@ -45,6 +45,7 @@ function closeModal() {
 }
 
 //Form validation rules
+//Making sure first name is at least 2 characters long
 function validerPrenom() {
   const prenom = balisePrenom.value;
   if (prenom.length >= 2) {
@@ -55,6 +56,7 @@ function validerPrenom() {
   return false;
 }
 
+//Making sure last name is at least 2 characters long
 function validerNom() {
   const nom = baliseNom.value;
   if (nom.length < 2) {
@@ -65,6 +67,7 @@ function validerNom() {
   return true;
 }
 
+//Making sure email adress is in the good format
 function validerEmail() {
   const email = baliseEmail.value;
   const mailRegExp = new RegExp("^[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z0-9._-]+");
@@ -76,6 +79,7 @@ function validerEmail() {
   return true;
 }
 
+//Making sure there is a full birthdate written in the field
 function validerDate() {
   const naissance = baliseNaissance.value;
   if (naissance === "") {
@@ -86,6 +90,7 @@ function validerDate() {
   return true;
 }
 
+//making sure the field isn't empty and only accepts number
 function validerQuantite() {
   const quantite = baliseQuantite.value;
   const quantiteRegExp = new RegExp("^[0-9]+");
@@ -97,6 +102,7 @@ function validerQuantite() {
   return true;
 }
 
+//Making sure there is a location selected
 function validerLocation() {
   let isChecked = false; // Variable pour suivre si un radio est coché
   baliseLocation.forEach((radio) => {
@@ -120,6 +126,7 @@ function validerLocation() {
   return true;
 }
 
+//Making sure that the conditions are accepted
 function validerConditions() {
   if (!baliseConditions.checked) {
     conditionsParent.setAttribute("data-error-visible", "true");
@@ -131,6 +138,7 @@ function validerConditions() {
 
 //Function validate on submit
 function validate() {
+  //gather all functions' values
   const isValidPrenom = validerPrenom();
   const isValidNom = validerNom();
   const isValidEmail = validerEmail();
@@ -138,7 +146,7 @@ function validate() {
   const isValidQuantite = validerQuantite();
   const isValidLocation = validerLocation();
   const isValidConditions = validerConditions();
-
+  //Checking that all fonctions'values are true
   if (
     isValidPrenom &&
     isValidNom &&
@@ -152,7 +160,7 @@ function validate() {
   }
   return false;
 }
-
+//When the form is valid, creates the validation message, make all fields vanish and change the submit button for a "closing modal" one
 function formValide() {
   formData.forEach((formData) => {
     formData.style.opacity = "0";
@@ -172,16 +180,18 @@ function formValide() {
   messageValidation.style.fontWeight = "400";
   messageValidation.style.textAlign = "center";
   messageValidation.style.color = "white";
+  btnSubmit.value = "Fermer";
+  btnSubmit.addEventListener("click", closeModal);
 }
 
 //Form submit event
 form.addEventListener("submit", (event) => {
   event.preventDefault();
+  //checking the value of the function validate
   const isValid = validate();
   if (isValid) {
+    //if true, reset form and use formValide functionS
     form.reset();
     formValide();
-    btnSubmit.value = "Fermer";
-    btnSubmit.addEventListener("click", closeModal);
   }
 });
